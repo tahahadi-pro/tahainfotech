@@ -917,6 +917,12 @@
   font-weight: 600;
 }
 
+.form-status--error {
+  background: #fef3f2;
+  color: var(--danger);
+  border-color: #f3c1bc;
+}
+
 @media (min-width: 700px) {
   .form-row {
     grid-template-columns: repeat(2, minmax(0, 1fr));

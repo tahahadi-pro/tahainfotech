@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Button } from '../components/Button'
 import { Reveal } from '../components/Reveal'
 import { SectionHeading } from '../components/SectionHeading'
@@ -15,12 +15,19 @@ const initialForm = {
 export function Contact() {
   const [form, setForm] = useState(initialForm)
   const [errors, setErrors] = useState({})
-  const [submitted, setSubmitted] = useState(false)
+  const [status, setStatus] = useState('idle')
+  const [statusMessage, setStatusMessage] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const submittingRef = useRef(false)
 
   const updateField = (event) => {
     const { name, value } = event.target
     setForm((prev) => ({ ...prev, [name]: value }))
     setErrors((prev) => ({ ...prev, [name]: '' }))
+    if (status !== 'idle') {
+      setStatus('idle')
+      setStatusMessage('')
+    }
   }
 
   const validate = () => {
@@ -37,30 +44,75 @@ export function Contact() {
     return next
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
+    if (submittingRef.current) return
+
     const nextErrors = validate()
     if (Object.keys(nextErrors).length) {
       setErrors(nextErrors)
-      setSubmitted(false)
+      setStatus('idle')
+      setStatusMessage('')
       return
     }
 
-    const subject = encodeURIComponent(`Project inquiry from ${form.name}`)
-    const body = encodeURIComponent(
-      [
-        `Name: ${form.name}`,
-        `Email: ${form.email}`,
-        `Company: ${form.company || 'N/A'}`,
-        `Service interest: ${form.service}`,
-        '',
-        form.message,
-      ].join('\n'),
-    )
+    submittingRef.current = true
+    setIsSubmitting(true)
+    setStatus('idle')
+    setStatusMessage('')
+    setErrors({})
 
-    window.location.href = `mailto:${contactDetails.email}?subject=${subject}&body=${body}`
-    setSubmitted(true)
-    setForm(initialForm)
+    const payload = {
+      name: form.name.trim(),
+      email: form.email.trim(),
+      company: form.company.trim(),
+      service: form.service,
+      message: form.message.trim(),
+    }
+
+    const idempotencyKey =
+      typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(36).slice(2)}`
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Idempotency-Key': idempotencyKey,
+        },
+        body: JSON.stringify(payload),
+      })
+
+      let result = null
+      try {
+        result = await response.json()
+      } catch {
+        result = null
+      }
+
+      if (!response.ok) {
+        if (result?.errors && typeof result.errors === 'object') {
+          setErrors(result.errors)
+        }
+        setStatus('error')
+        setStatusMessage(
+          result?.error || 'Unable to send your message right now. Please try again shortly.',
+        )
+        return
+      }
+
+      setStatus('success')
+      setStatusMessage('Thanks—your message has been sent. We’ll get back to you soon.')
+      setForm(initialForm)
+    } catch {
+      setStatus('error')
+      setStatusMessage('Unable to send your message right now. Please try again shortly.')
+    } finally {
+      submittingRef.current = false
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -121,6 +173,7 @@ export function Contact() {
                     autoComplete="name"
                     value={form.name}
                     onChange={updateField}
+                    disabled={isSubmitting}
                     aria-invalid={Boolean(errors.name)}
                     aria-describedby={errors.name ? 'name-error' : undefined}
                   />
@@ -140,6 +193,7 @@ export function Contact() {
                     autoComplete="email"
                     value={form.email}
                     onChange={updateField}
+                    disabled={isSubmitting}
                     aria-invalid={Boolean(errors.email)}
                     aria-describedby={errors.email ? 'email-error' : undefined}
                   />
@@ -161,12 +215,19 @@ export function Contact() {
                     autoComplete="organization"
                     value={form.company}
                     onChange={updateField}
+                    disabled={isSubmitting}
                   />
                 </div>
 
                 <div className="field">
                   <label htmlFor="service">Service interest</label>
-                  <select id="service" name="service" value={form.service} onChange={updateField}>
+                  <select
+                    id="service"
+                    name="service"
+                    value={form.service}
+                    onChange={updateField}
+                    disabled={isSubmitting}
+                  >
                     <option>Custom Software Development</option>
                     <option>Cloud &amp; DevOps</option>
                     <option>IT Consultancy &amp; Strategy</option>
@@ -184,6 +245,7 @@ export function Contact() {
                   name="message"
                   value={form.message}
                   onChange={updateField}
+                  disabled={isSubmitting}
                   aria-invalid={Boolean(errors.message)}
                   aria-describedby={errors.message ? 'message-error' : undefined}
                   placeholder="Share goals, timeline, and current systems."
@@ -195,14 +257,20 @@ export function Contact() {
                 ) : null}
               </div>
 
-              {submitted ? (
+              {status === 'success' ? (
                 <p className="form-status" role="status">
-                  Thanks—your email draft is ready. Send it to complete your inquiry.
+                  {statusMessage}
                 </p>
               ) : null}
 
-              <Button type="submit" full>
-                Send message
+              {status === 'error' ? (
+                <p className="form-status form-status--error" role="alert">
+                  {statusMessage}
+                </p>
+              ) : null}
+
+              <Button type="submit" full disabled={isSubmitting}>
+                {isSubmitting ? 'Sending…' : 'Send message'}
               </Button>
             </form>
           </Reveal>

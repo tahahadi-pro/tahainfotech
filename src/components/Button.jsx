@@ -7,6 +7,7 @@ export function Button({
   className = '',
   full = false,
   ariaLabel,
+  disabled = false,
 }) {
   const classes = `btn btn--${variant} ${full ? 'btn--full' : ''} ${className}`.trim()
 
@@ -19,7 +20,13 @@ export function Button({
   }
 
   return (
-    <button type={type} className={classes} onClick={onClick} aria-label={ariaLabel}>
+    <button
+      type={type}
+      className={classes}
+      onClick={onClick}
+      aria-label={ariaLabel}
+      disabled={disabled}
+    >
       {children}
     </button>
   )
