@@ -63,7 +63,10 @@ function getNavOffset() {
 
 export function scrollToId(id) {
   const el = document.getElementById(id)
-  if (!el) return
+  if (!el) {
+    if (window.location.pathname !== '/') window.location.assign(`/#${id}`)
+    return
+  }
 
   // Land on the section heading, not empty top padding under the sticky nav
   const target =

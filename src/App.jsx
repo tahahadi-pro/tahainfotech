@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Navbar } from './components/Navbar'
 import { Footer } from './components/Footer'
 import { Hero } from './sections/Hero'
@@ -10,9 +11,21 @@ import { Process } from './sections/Process'
 import { Testimonials } from './sections/Testimonials'
 import { FAQ } from './sections/FAQ'
 import { Contact } from './sections/Contact'
+import { LegalPage } from './pages/LegalPage'
+import { legalPages } from './data/legal'
+import { scrollToId } from './hooks/useUi'
 import './App.css'
 
 function App() {
+  const path = window.location.pathname.replace(/\/+$/, '') || '/'
+  const legalPage = legalPages[path]
+
+  useEffect(() => {
+    if (legalPage) return
+    const hash = window.location.hash.slice(1)
+    if (hash) requestAnimationFrame(() => scrollToId(hash))
+  }, [legalPage])
+
   return (
     <>
       <a className="skip-link" href="#main">
@@ -20,16 +33,22 @@ function App() {
       </a>
       <Navbar />
       <main id="main">
-        <Hero />
-        <About />
-        <Services />
-        <WhyChooseUs />
-        <Technologies />
-        <Projects />
-        <Process />
-        <Testimonials />
-        <FAQ />
-        <Contact />
+        {legalPage ? (
+          <LegalPage page={legalPage} />
+        ) : (
+          <>
+            <Hero />
+            <About />
+            <Services />
+            <WhyChooseUs />
+            <Technologies />
+            <Projects />
+            <Process />
+            <Testimonials />
+            <FAQ />
+            <Contact />
+          </>
+        )}
       </main>
       <Footer />
     </>

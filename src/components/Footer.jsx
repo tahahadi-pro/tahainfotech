@@ -72,6 +72,11 @@ export function Footer() {
 
       <div className="container footer__bottom">
         <p>© {year} TahaInfoTech. All rights reserved.</p>
+        <p className="footer__legal">
+          <a href="/privacy-policy">Privacy Policy</a>
+          <span aria-hidden="true">·</span>
+          <a href="/terms-and-conditions">Terms &amp; Conditions</a>
+        </p>
         <p>
           Built for modern businesses ·{' '}
           <a href="https://tahainfotech.com" rel="noopener noreferrer">
