@@ -156,4 +156,79 @@ export const legalPages = {
       },
     ],
   },
+  '/return-policy': {
+    title: 'Return Policy',
+    lead: 'How returns, cancellations, and refunds work for TahaInfoTech services.',
+    updated: 'October 1, 2026',
+    sections: [
+      {
+        heading: 'Overview',
+        body: [
+          'TahaInfoTech provides professional IT services such as software development, cloud engineering, cybersecurity, consultancy, and managed support. Because our services are digital and delivered as work performed, there are no physical products to return. This policy explains how cancellations and refunds are handled.',
+        ],
+      },
+      {
+        heading: 'Project agreements take priority',
+        body: [
+          'Every engagement is covered by a written proposal, statement of work, or service agreement. Where that agreement includes specific cancellation or refund terms, those terms apply and take precedence over this policy.',
+        ],
+      },
+      {
+        heading: 'Cancellation before work begins',
+        body: [
+          'If you cancel a confirmed engagement before any work has started, you are eligible for a refund of amounts paid, less any non-recoverable third-party costs already incurred on your behalf (for example, licenses, domains, or cloud resources).',
+        ],
+      },
+      {
+        heading: 'Cancellation after work begins',
+        body: [
+          'If you cancel after work has started, you will be billed for work completed and costs incurred up to the cancellation date. Any prepaid amount above that will be refunded.',
+        ],
+      },
+      {
+        heading: 'Milestone-based projects',
+        body: [
+          'For projects billed by milestone, payments for milestones that have been delivered and accepted are non-refundable. Payments for milestones not yet started are refundable if the project is cancelled.',
+        ],
+      },
+      {
+        heading: 'Subscriptions and managed services',
+        body: [
+          'Monthly or retainer-based services can be cancelled with the notice period stated in your agreement. Fees for the current billing period are non-refundable, and the service remains active until the end of that period.',
+        ],
+      },
+      {
+        heading: 'Quality concerns',
+        body: [
+          'If a deliverable does not meet the requirements agreed in writing, please let us know. We will first work with you to correct the issue at no additional cost. If we cannot resolve it, we will discuss a fair partial or full refund for the affected work.',
+        ],
+      },
+      {
+        heading: 'Non-refundable items',
+        list: [
+          'Third-party software licenses, subscriptions, domains, and hosting purchased on your behalf.',
+          'Work completed and accepted by you.',
+          'Consultation or discovery sessions that have already taken place.',
+        ],
+      },
+      {
+        heading: 'How to request a refund',
+        body: [
+          `Email ${contactDetails.email} with your name, company, project or invoice reference, and the reason for your request. We aim to respond within 5 business days. Approved refunds are issued to the original payment method, and processing times depend on your bank or payment provider.`,
+        ],
+      },
+      {
+        heading: 'Changes to this policy',
+        body: [
+          'We may update this Return Policy from time to time. The latest version will always be posted on this page with its effective date.',
+        ],
+      },
+      {
+        heading: 'Contact us',
+        body: [
+          `Questions about this Return Policy? Contact us at ${contactDetails.email} or write to TahaInfoTech, ${contactDetails.location}.`,
+        ],
+      },
+    ],
+  },
 }

@@ -76,6 +76,8 @@ export function Footer() {
           <a href="/privacy-policy">Privacy Policy</a>
           <span aria-hidden="true">·</span>
           <a href="/terms-and-conditions">Terms &amp; Conditions</a>
+          <span aria-hidden="true">·</span>
+          <a href="/return-policy">Return Policy</a>
         </p>
         <p>
           Built for modern businesses ·{' '}
