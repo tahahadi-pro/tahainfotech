@@ -245,4 +245,6 @@ export const contactDetails = {
 export const paypalCheckout = {
   url: 'https://www.paypal.com/ncp/payment/4LPJ5RZUEHXW4',
   label: 'Pay with PayPal',
+  qrImage: '/images/paypal-payment-qr.png',
+  qrLabel: 'IT Services',
 }

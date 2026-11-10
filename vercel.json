@@ -1,9 +1,11 @@
 {
+  "redirects": [
+    { "source": "/checkout", "destination": "/payment", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/privacy-policy", "destination": "/index.html" },
     { "source": "/terms-and-conditions", "destination": "/index.html" },
     { "source": "/return-policy", "destination": "/index.html" },
-    { "source": "/checkout", "destination": "/index.html" },
     { "source": "/payment", "destination": "/index.html" }
   ]
 }

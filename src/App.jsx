@@ -12,7 +12,6 @@ import { Testimonials } from './sections/Testimonials'
 import { FAQ } from './sections/FAQ'
 import { Contact } from './sections/Contact'
 import { LegalPage } from './pages/LegalPage'
-import { CheckoutPage } from './pages/CheckoutPage'
 import { PaymentPage } from './pages/PaymentPage'
 import { legalPages } from './data/legal'
 import { scrollToId } from './hooks/useUi'
@@ -21,14 +20,19 @@ import './App.css'
 function App() {
   const path = window.location.pathname.replace(/\/+$/, '') || '/'
   const legalPage = legalPages[path]
-  const isCheckout = path === '/checkout'
-  const isPayment = path === '/payment'
+  const isPayment = path === '/payment' || path === '/checkout'
 
   useEffect(() => {
-    if (legalPage || isCheckout || isPayment) return
+    if (path === '/checkout') {
+      window.history.replaceState({}, '', '/payment')
+    }
+  }, [path])
+
+  useEffect(() => {
+    if (legalPage || isPayment) return
     const hash = window.location.hash.slice(1)
     if (hash) requestAnimationFrame(() => scrollToId(hash))
-  }, [legalPage, isCheckout, isPayment])
+  }, [legalPage, isPayment])
 
   let page = (
     <>
@@ -47,7 +51,6 @@ function App() {
 
   if (legalPage) page = <LegalPage page={legalPage} />
   else if (isPayment) page = <PaymentPage />
-  else if (isCheckout) page = <CheckoutPage />
 
   return (
     <>

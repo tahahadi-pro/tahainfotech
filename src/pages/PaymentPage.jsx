@@ -17,8 +17,8 @@ export function PaymentPage() {
             Pay TahaInfoTech
           </h1>
           <p className="section__lead">
-            Use this page to complete your payment in one step. You will continue on PayPal’s secure
-            checkout, and the amount will settle into our PayPal account.
+            Pay with the QR code or continue on PayPal’s secure checkout. The amount settles into
+            our PayPal account.
           </p>
         </header>
 
@@ -39,6 +39,27 @@ export function PaymentPage() {
               <strong>Amount shown on PayPal</strong>
             </div>
 
+            <div className="payment__qr">
+              <p className="payment__qr-title">Scan to pay</p>
+              <figure className="payment__qr-frame">
+                <img
+                  src={paypalCheckout.qrImage}
+                  alt={`${paypalCheckout.qrLabel} PayPal payment QR code`}
+                  width={280}
+                  height={280}
+                  loading="eager"
+                  decoding="async"
+                />
+              </figure>
+              <p className="payment__qr-caption">
+                Open your phone camera or PayPal app and scan this QR code for {paypalCheckout.qrLabel}.
+              </p>
+            </div>
+
+            <div className="payment__divider" role="separator">
+              <span>or</span>
+            </div>
+
             <Button
               href={paypalCheckout.url}
               className="checkout__paypal-btn"
@@ -52,19 +73,14 @@ export function PaymentPage() {
               <span className="payment__secure-dot" aria-hidden="true" />
               256-bit encrypted · PayPal Buyer Protection
             </p>
-
-            <p className="checkout__note">
-              Prefer a guided checkout first?{' '}
-              <a href="/checkout">Go to Checkout</a>
-            </p>
           </aside>
 
           <div className="payment__panel">
             <h2>How payment works</h2>
             <ol className="payment__steps">
               <li>
-                <strong>Click Pay with PayPal</strong>
-                <span>You’ll open PayPal’s secure payment page.</span>
+                <strong>Scan the QR code or click Pay with PayPal</strong>
+                <span>Either opens PayPal’s secure payment flow.</span>
               </li>
               <li>
                 <strong>Review the total</strong>
