@@ -66,6 +66,9 @@ export function Footer() {
                 tahainfotech.com
               </a>
             </li>
+            <li>
+              <a href="/checkout">Pay with PayPal</a>
+            </li>
           </ul>
         </div>
       </div>

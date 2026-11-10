@@ -241,3 +241,8 @@ export const contactDetails = {
   location: '30 N Gould St Ste R, Sheridan, WY 82801',
   hours: 'Mon–Fri, 9:00 AM – 6:00 PM',
 }
+
+export const paypalCheckout = {
+  url: 'https://www.paypal.com/ncp/payment/4LPJ5RZUEHXW4',
+  label: 'Pay with PayPal',
+}

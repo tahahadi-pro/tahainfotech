@@ -12,6 +12,7 @@ import { Testimonials } from './sections/Testimonials'
 import { FAQ } from './sections/FAQ'
 import { Contact } from './sections/Contact'
 import { LegalPage } from './pages/LegalPage'
+import { CheckoutPage } from './pages/CheckoutPage'
 import { legalPages } from './data/legal'
 import { scrollToId } from './hooks/useUi'
 import './App.css'
@@ -19,12 +20,13 @@ import './App.css'
 function App() {
   const path = window.location.pathname.replace(/\/+$/, '') || '/'
   const legalPage = legalPages[path]
+  const isCheckout = path === '/checkout'
 
   useEffect(() => {
-    if (legalPage) return
+    if (legalPage || isCheckout) return
     const hash = window.location.hash.slice(1)
     if (hash) requestAnimationFrame(() => scrollToId(hash))
-  }, [legalPage])
+  }, [legalPage, isCheckout])
 
   return (
     <>
@@ -35,6 +37,8 @@ function App() {
       <main id="main">
         {legalPage ? (
           <LegalPage page={legalPage} />
+        ) : isCheckout ? (
+          <CheckoutPage />
         ) : (
           <>
             <Hero />
