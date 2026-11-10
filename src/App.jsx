@@ -13,6 +13,7 @@ import { FAQ } from './sections/FAQ'
 import { Contact } from './sections/Contact'
 import { LegalPage } from './pages/LegalPage'
 import { CheckoutPage } from './pages/CheckoutPage'
+import { PaymentPage } from './pages/PaymentPage'
 import { legalPages } from './data/legal'
 import { scrollToId } from './hooks/useUi'
 import './App.css'
@@ -21,12 +22,32 @@ function App() {
   const path = window.location.pathname.replace(/\/+$/, '') || '/'
   const legalPage = legalPages[path]
   const isCheckout = path === '/checkout'
+  const isPayment = path === '/payment'
 
   useEffect(() => {
-    if (legalPage || isCheckout) return
+    if (legalPage || isCheckout || isPayment) return
     const hash = window.location.hash.slice(1)
     if (hash) requestAnimationFrame(() => scrollToId(hash))
-  }, [legalPage, isCheckout])
+  }, [legalPage, isCheckout, isPayment])
+
+  let page = (
+    <>
+      <Hero />
+      <About />
+      <Services />
+      <WhyChooseUs />
+      <Technologies />
+      <Projects />
+      <Process />
+      <Testimonials />
+      <FAQ />
+      <Contact />
+    </>
+  )
+
+  if (legalPage) page = <LegalPage page={legalPage} />
+  else if (isPayment) page = <PaymentPage />
+  else if (isCheckout) page = <CheckoutPage />
 
   return (
     <>
@@ -34,26 +55,7 @@ function App() {
         Skip to main content
       </a>
       <Navbar />
-      <main id="main">
-        {legalPage ? (
-          <LegalPage page={legalPage} />
-        ) : isCheckout ? (
-          <CheckoutPage />
-        ) : (
-          <>
-            <Hero />
-            <About />
-            <Services />
-            <WhyChooseUs />
-            <Technologies />
-            <Projects />
-            <Process />
-            <Testimonials />
-            <FAQ />
-            <Contact />
-          </>
-        )}
-      </main>
+      <main id="main">{page}</main>
       <Footer />
     </>
   )

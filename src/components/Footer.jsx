@@ -67,7 +67,10 @@ export function Footer() {
               </a>
             </li>
             <li>
-              <a href="/checkout">Pay with PayPal</a>
+              <a href="/payment">Payment</a>
+            </li>
+            <li>
+              <a href="/checkout">Checkout</a>
             </li>
           </ul>
         </div>
